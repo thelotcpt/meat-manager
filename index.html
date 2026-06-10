@@ -3,121 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE SKINNA MASTER COURSE</title>
+    <title>Juanita's Meat Manager Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --sage: #8A9A5B;
-            --sand: #F5F5DC;
-            --charcoal: #333333;
-            --cream: #FFFDD0;
-        }
-        body {
-            font-family: 'Georgia', serif;
-            line-height: 1.6;
-            color: var(--charcoal);
-            background-color: var(--cream);
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: var(--sage);
-            color: white;
-            padding: 4rem 2rem;
-            text-align: center;
-        }
-        .container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background: white;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-        h1, h2, h3 { color: var(--sage); }
-        .module-card {
-            border-left: 4px solid var(--sage);
-            padding-left: 1.5rem;
-            margin-bottom: 3rem;
-        }
-        .checklist {
-            background: #f9f9f9;
-            padding: 1rem;
-            border-radius: 8px;
-        }
-        .footer {
-            text-align: center;
-            padding: 2rem;
-            font-size: 0.9rem;
-            color: #777;
-        }
-        .btn {
-            display: inline-block;
-            background: var(--sage);
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
+        .admin-only { display: none; }
+        body.is-admin .admin-only { display: block; }
+        body.is-admin .customer-only { display: none; }
+        .step-inactive { display: none; }
     </style>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-900 pb-32" id="app-body">
+    <header class="bg-white/80 backdrop-blur-md border-b sticky top-0 z-50 p-4">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-black tracking-tighter italic text-red-600">MEAT MANAGER PRO</h1>
+                <p class="text-[10px] uppercase font-bold text-slate-400 tracking-widest">v2.1 • Secret Build</p>
+            </div>
+            <button onclick="toggleAdmin()" class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 hover:text-red-600 transition shadow-inner">
+                <i class="fa-solid fa-user-gear text-sm"></i>
+            </button>
+        </div>
+    </header>
 
-<header>
-    <h1>THE SKINNA MASTER COURSE</h1>
-    <p>The Step-by-Step Blueprint for building a premium Beauty Brand in South Africa.</p>
-</header>
+    <main class="max-w-md mx-auto p-5 space-y-6">
+        <!-- ADMIN VIEW -->
+        <section class="admin-only space-y-4">
+            <div class="bg-slate-900 text-white p-8 rounded-[2rem] shadow-2xl overflow-hidden relative">
+                <div class="relative z-10">
+                    <h2 class="text-3xl font-black mb-1">Admin Panel</h2>
+                    <p class="text-slate-400 text-[10px] uppercase font-bold tracking-[0.2em] mb-6">Juanita De Jager Business</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-white/5 p-4 rounded-2xl border border-white/10">
+                            <p class="text-[9px] text-slate-500 uppercase font-black tracking-widest">Today's Revenue</p>
+                            <p class="text-2xl font-black text-red-400">R 0.00</p>
+                        </div>
+                        <div class="bg-white/5 p-4 rounded-2xl border border-white/10">
+                            <p class="text-[9px] text-slate-500 uppercase font-black tracking-widest">Active Leads</p>
+                            <p class="text-2xl font-black">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-[2.5rem] border shadow-sm">
+                <h3 class="font-black text-xs text-slate-400 uppercase tracking-widest mb-4 px-2">Inventory Management</h3>
+                <div id="admin-catalog" class="space-y-3"></div>
+            </div>
+        </section>
 
-<div class="container">
-    <h2>Course Roadmap</h2>
-    <p>Welcome to the Skinna Playbook. This course is divided into 15 actionable modules designed to take you from concept to a multi-million Rand exit.</p>
-    
-    <div class="module-card">
-        <h3>Phase 1: Foundations</h3>
-        <ul>
-            <li><strong>Module 1:</strong> Market Analysis & Aesthetic Selection</li>
-            <li><strong>Module 2:</strong> Business Setup & Legal (CIPC/SARS)</li>
-            <li><strong>Module 3:</strong> Shopify Store Setup</li>
-            <li><strong>Module 4:</strong> Payment Gateway (PayFast)</li>
-        </ul>
+        <!-- CUSTOMER FLOW -->
+        <div class="customer-only space-y-6">
+            <!-- STEP 1: WELCOME DATA CAPTURE -->
+            <div id="welcome-step" class="bg-white p-10 rounded-[3rem] shadow-2xl border border-slate-100 text-center space-y-8">
+                <div class="w-24 h-24 bg-red-600 text-white rounded-[2rem] flex items-center justify-center mx-auto shadow-2xl rotate-3">
+                    <i class="fa-solid fa-drumstick-bite text-4xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-black tracking-tighter leading-none text-slate-900">Elite Quality Meats<br>Direct to You.</h2>
+                    <p class="text-slate-500 mt-4 text-sm font-medium px-4">Private portal for Bellville & Cape Town residents. Enter details to view prices.</p>
+                </div>
+                <div class="space-y-3">
+                    <input type="text" id="cust-name" placeholder="Full Name" class="w-full p-5 bg-slate-50 rounded-2xl border-2 border-transparent focus:border-red-500 focus:bg-white outline-none transition font-bold text-lg">
+                    <input type="tel" id="cust-phone" placeholder="WhatsApp Number" class="w-full p-5 bg-slate-50 rounded-2xl border-2 border-transparent focus:border-red-500 focus:bg-white outline-none transition font-bold text-lg">
+                    <textarea id="cust-addr" placeholder="Delivery Address (Street, Suburb)" class="w-full p-5 bg-slate-50 rounded-2xl border-2 border-transparent focus:border-red-500 focus:bg-white outline-none transition font-bold text-lg h-24 resize-none"></textarea>
+                    
+                    <div class="flex gap-2">
+                        <button onclick="setAddressType('Home')" id="btn-home" class="flex-1 py-4 bg-red-50 border-2 border-red-200 rounded-2xl text-[10px] font-black transition tracking-widest text-red-600">🏠 HOME</button>
+                        <button onclick="setAddressType('Office')" id="btn-office" class="flex-1 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-[10px] font-black transition tracking-widest text-slate-400">🏢 OFFICE</button>
+                    </div>
+
+                    <button onclick="unlockCatalog()" class="w-full bg-red-600 text-white font-black py-5 rounded-2xl shadow-2xl shadow-red-200 uppercase tracking-[0.2em] text-sm hover:scale-[1.02] active:scale-95 transition mt-4">Browse Catalog</button>
+                </div>
+            </div>
+
+            <!-- STEP 2: INTERACTIVE CATALOG -->
+            <section id="catalog-step" class="step-inactive space-y-4">
+                <div class="flex items-center justify-between px-2">
+                    <h2 class="font-black text-2xl tracking-tighter italic">LIVE MENU</h2>
+                    <div class="flex items-center gap-1.5 bg-green-100 text-green-700 px-3 py-1 rounded-full">
+                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                        <span class="text-[10px] font-black uppercase tracking-widest">In Stock</span>
+                    </div>
+                </div>
+                <div id="customer-catalog" class="space-y-4"></div>
+            </section>
+        </div>
+    </main>
+
+    <!-- FLOATING CHECKOUT -->
+    <div id="checkout-bar" class="step-inactive fixed bottom-6 left-4 right-4 z-50 animate-in slide-in-from-bottom duration-500">
+        <div class="max-w-md mx-auto bg-slate-900 text-white p-5 rounded-[2.5rem] shadow-2xl flex items-center justify-between ring-8 ring-white">
+            <div class="pl-4">
+                <p class="text-[10px] uppercase font-black text-slate-500 tracking-widest">Grand Total</p>
+                <p class="text-3xl font-black text-red-500" id="total-val">R 0</p>
+            </div>
+            <button onclick="sendOrder()" class="bg-red-600 px-8 py-5 rounded-[2rem] font-black text-xs uppercase tracking-widest hover:bg-red-700 transition active:scale-95 shadow-xl shadow-red-900/40">
+                Confirm Order <i class="fa-solid fa-chevron-right ml-2"></i>
+            </button>
+        </div>
     </div>
 
-    <div class="module-card">
-        <h3>Phase 2: Product & Logistics</h3>
-        <ul>
-            <li><strong>Module 5:</strong> Supplier Selection & Vetting</li>
-            <li><strong>Module 6:</strong> SA Logistics & Courier Setup</li>
-            <li><strong>Module 7:</strong> High-Converting Product Pages</li>
-        </ul>
-    </div>
+    <script>
+        let catalog = [
+            {id: 1, name: "Hake Crumbed Fingers (4kg Box)", price: 280, img: "🐟"},
+            {id: 2, name: "Hake Box (10kg Bulk)", price: 950, img: "📦"},
+            {id: 3, name: "Chicken Schnitzels (Large)", price: 265, img: "🍗"},
+            {id: 4, name: "Smoked Viennas (1kg)", price: 85, img: "🌭"},
+            {id: 5, name: "Beef Patties (Home Style)", price: 145, img: "🍔"},
+            {id: 6, name: "Lamb Chops (1kg)", price: 185, img: "🥩"}
+        ];
+        
+        let cart = {}; let addrType = "Home"; let isAdmin = false;
 
-    <div class="module-card">
-        <h3>Phase 3: Marketing & Growth</h3>
-        <ul>
-            <li><strong>Module 8:</strong> Organic Social (TikTok/Reels)</li>
-            <li><strong>Module 9:</strong> Paid Ads (Meta/TikTok)</li>
-            <li><strong>Module 10:</strong> Email & SMS Retention</li>
-            <li><strong>Module 11:</strong> Influencer & UGC Strategy</li>
-        </ul>
-    </div>
+        function setAddressType(type) {
+            addrType = type;
+            const homeBtn = document.getElementById('btn-home');
+            const officeBtn = document.getElementById('btn-office');
+            
+            if(type === 'Home') {
+                homeBtn.className = "flex-1 py-4 bg-red-50 border-2 border-red-200 rounded-2xl text-[10px] font-black tracking-widest text-red-600 transition";
+                officeBtn.className = "flex-1 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-[10px] font-black tracking-widest text-slate-400 transition";
+            } else {
+                homeBtn.className = "flex-1 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-[10px] font-black tracking-widest text-slate-400 transition";
+                officeBtn.className = "flex-1 py-4 bg-red-50 border-2 border-red-200 rounded-2xl text-[10px] font-black tracking-widest text-red-600 transition";
+            }
+        }
 
-    <div class="module-card">
-        <h3>Phase 4: Scaling & Exit</h3>
-        <ul>
-            <li><strong>Module 12:</strong> Customer Service (The Wow Factor)</li>
-            <li><strong>Module 13:</strong> Advanced Upselling & Bundling</li>
-            <li><strong>Module 14:</strong> Financial Management & Math</li>
-            <li><strong>Module 15:</strong> Private Labeling & Exit Strategy</li>
-        </ul>
-    </div>
+        function unlockCatalog() {
+            const name = document.getElementById('cust-name').value;
+            const phone = document.getElementById('cust-phone').value;
+            const addr = document.getElementById('cust-addr').value;
+            if(!name || !phone || !addr) { alert("Please complete your delivery info!"); return; }
+            document.getElementById('welcome-step').classList.add('step-inactive');
+            document.getElementById('catalog-step').classList.remove('step-inactive');
+            document.getElementById('checkout-bar').classList.remove('step-inactive');
+            renderCustomerCatalog();
+        }
 
-    <hr>
-    <p><em>Click below to access the full instructional guide for each step.</em></p>
-    <a href="#" class="btn">Download Full PDF Guide</a>
-</div>
+        function renderCustomerCatalog() {
+            const container = document.getElementById('customer-catalog');
+            container.innerHTML = catalog.map(item => `
+                <div class="bg-white p-6 rounded-[2.5rem] shadow-sm border border-slate-50 flex items-center justify-between animate-in fade-in duration-300">
+                    <div class="flex items-center gap-5">
+                        <div class="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-3xl shadow-inner">${item.img}</div>
+                        <div>
+                            <p class="font-black text-slate-800 leading-tight">${item.name}</p>
+                            <p class="text-xs font-black text-red-500 mt-1 uppercase tracking-widest">R ${item.price}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 bg-slate-50 p-2 rounded-2xl shadow-inner border border-slate-100">
+                        <button onclick="updateQty(${item.id}, -1)" class="bg-white w-10 h-10 rounded-xl shadow-md font-black text-lg hover:bg-red-50 transition">-</button>
+                        <span class="font-black text-lg w-6 text-center">${cart[item.id] || 0}</span>
+                        <button onclick="updateQty(${item.id}, 1)" class="bg-white w-10 h-10 rounded-xl shadow-md font-black text-lg hover:bg-green-50 transition">+</button>
+                    </div>
+                </div>
+            `).join('');
+        }
 
-<div class="footer">
-    Created by Zapia for Jose Dean Joseph & Quinton Mason
-</div>
+        function updateQty(id, delta) {
+            cart[id] = Math.max(0, (cart[id] || 0) + delta);
+            renderCustomerCatalog(); updateTotal();
+        }
 
+        function updateTotal() {
+            let total = 0; catalog.forEach(i => total += (i.price * (cart[i.id] || 0)));
+            document.getElementById('total-val').innerText = "R " + total;
+        }
+
+        function toggleAdmin() {
+            const pin = prompt("Admin PIN Required:");
+            if(pin === "1234") { 
+                isAdmin = !isAdmin; 
+                document.getElementById('app-body').classList.toggle('is-admin'); 
+                renderAdminCatalog(); 
+            } else if(pin) { alert("Access Denied."); }
+        }
+
+        function renderAdminCatalog() {
+            const container = document.getElementById('admin-catalog');
+            container.innerHTML = catalog.map(item => `
+                <div class="flex items-center justify-between p-4 bg-slate-50 rounded-3xl border border-slate-100">
+                    <div class="flex items-center gap-4">
+                        <span class="text-xl">${item.img}</span>
+                        <p class="font-black text-[10px] uppercase text-slate-500">${item.name}</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="number" value="${item.price}" class="w-16 p-2 rounded-xl border-none bg-white shadow-inner font-black text-center text-xs">
+                        <button class="bg-green-500 text-white w-8 h-8 rounded-lg text-[10px]"><i class="fa-solid fa-check"></i></button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function sendOrder() {
+            const name = document.getElementById('cust-name').value;
+            const addr = document.getElementById('cust-addr').value;
+            const total = document.getElementById('total-val').innerText;
+            let items = []; catalog.forEach(i => { if(cart[i.id] > 0) items.push(`${cart[i.id]}x ${i.name}`); });
+            if(items.length === 0) return alert("Select some items first!");
+            const message = `🍖 *NEW MEAT ORDER* 🍖\n\n*From:* ${name}\n*Delivery:* ${addr} (${addrType})\n\n*Items:*\\n${items.join('\\n')}\n\n*TOTAL:* ${total}\n\n_Ref: ${name}_`;
+            window.location.href = `https://wa.me/27683860798?text=${encodeURIComponent(message)}`;
+        }
+    </script>
 </body>
 </html>
