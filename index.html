@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juanita's Quality Meats | Price List</title>
+    <style>
+        :root { --primary: #2563eb; --bg: #f8fafc; --text: #0f172a; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text); padding: 20px; }
+        .container { max-width: 500px; margin: 0 auto; }
+        header { text-align: center; padding: 40px 0; }
+        h1 { margin: 0; font-size: 2rem; font-weight: 800; }
+        .card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #e2e8f0; }
+        .item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #f1f5f9; }
+        .item:last-child { border-bottom: none; }
+        .name { font-weight: 700; }
+        .price { font-weight: 800; color: var(--primary); }
+        .btn { display: block; width: 100%; padding: 18px; background: var(--primary); color: white; text-align: center; text-decoration: none; border-radius: 15px; font-weight: 800; margin-top: 20px; }
+        .badge { font-size: 0.7rem; background: #fee2e2; color: #ef4444; padding: 2px 8px; border-radius: 10px; margin-left: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Juanita's Meats</h1>
+            <p>Fresh Bulk Orders • Cape Town & Surrounds</p>
+        </header>
+
+        <div class="card">
+            <div class="item">
+                <div class="name">Hake Crumbed Fingers (4kg)</div>
+                <div class="price">R 280</div>
+            </div>
+            <div class="item">
+                <div class="name">Hake Box (10kg)</div>
+                <div class="price">R 950</div>
+            </div>
+            <div class="item">
+                <div class="name">Chicken Schnitzel (4kg)</div>
+                <div class="price">R 265</div>
+            </div>
+            <div class="item">
+                <div class="name">Lamb Chops (1kg) <span class="badge">SOLD OUT</span></div>
+                <div class="price">R 185</div>
+            </div>
+        </div>
+
+        <p style="text-align: center; font-size: 0.9rem; color: #64748b;">Click below to send your order via WhatsApp</p>
+        
+        <a href="https://wa.me/27683860798?text=Hello%20Juanita!%20I'd%20like%20to%20place%20a%20meat%20order.%20Please%20send%20me%20the%20order%20form..." class="btn">
+            Order via WhatsApp
+        </a>
+    </div>
+</body>
+</html>
