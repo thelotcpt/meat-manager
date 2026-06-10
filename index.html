@@ -117,8 +117,8 @@
             {id: 7, name: "Italian Pasta Roll: Alfredo", price: 185, img: "💚"},
             {id: 8, name: "Italian Pasta Roll: Spinach Feta", price: 185, img: "🟣"},
             {id: 9, name: "Italian Pasta Roll: Butternut Feta", price: 185, img: "🧡"},
-            {id: 10, name: "Assorted Biscuits (Tub 1 - 1.2kg)", price: 150, img: "biscuits.jpg", note: "Subject to availability"},
-            {id: 11, name: "Assorted Biscuits (Tub 2 - 1.2kg)", price: 150, img: "biscuits.jpg", note: "Subject to availability"},
+            {id: 10, name: "Assorted Biscuits (Tub 1 - 1.2kg)", price: 150, img: "🍪", note: "Subject to availability"},
+            {id: 11, name: "Assorted Biscuits (Tub 2 - 1.2kg)", price: 150, img: "🍪", note: "Subject to availability"},
             {id: 12, name: "Hake Crumbed Fingers (4kg Box)", price: 280, img: "🐟"},
             {id: 13, name: "Hake Box (10kg Bulk)", price: 950, img: "📦"},
             {id: 14, name: "Chicken Schnitzels (Large)", price: 265, img: "🍗"},
@@ -159,7 +159,10 @@
             container.innerHTML = catalog.map(item => `
                 <div class="bg-white p-6 rounded-[2.5rem] shadow-sm border border-slate-50 flex items-center justify-between animate-in fade-in duration-300">
                     <div class="flex items-center gap-5">
-                        <div class="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-3xl shadow-inner">${item.img}</div>
+                        <div class="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-3xl shadow-inner overflow-hidden">
+                            <img src="${item.img.includes('.') ? item.img : ''}" class="${item.img.includes('.') ? '' : 'hidden'} w-full h-full object-cover">
+                            <span class="${item.img.includes('.') ? 'hidden' : ''}">${item.img}</span>
+                        </div>
                         <div>
                             <p class="font-black text-slate-800 leading-tight">${item.name}</p>
                             <p class="text-[9px] font-bold text-slate-400 uppercase mt-0.5">${item.note || ""}</p>
