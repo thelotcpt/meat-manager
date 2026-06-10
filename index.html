@@ -117,12 +117,14 @@
             {id: 7, name: "Italian Pasta Roll: Alfredo", price: 185, img: "💚"},
             {id: 8, name: "Italian Pasta Roll: Spinach Feta", price: 185, img: "🟣"},
             {id: 9, name: "Italian Pasta Roll: Butternut Feta", price: 185, img: "🧡"},
-            {id: 10, name: "Hake Crumbed Fingers (4kg Box)", price: 280, img: "🐟"},
-            {id: 11, name: "Hake Box (10kg Bulk)", price: 950, img: "📦"},
-            {id: 12, name: "Chicken Schnitzels (Large)", price: 265, img: "🍗"},
-            {id: 13, name: "Smoked Viennas (1kg)", price: 85, img: "🌭"},
-            {id: 14, name: "Beef Patties (Home Style)", price: 145, img: "🍔"},
-            {id: 15, name: "Lamb Chops (1kg)", price: 185, img: "🥩"}
+            {id: 10, name: "Assorted Biscuits (Tub 1 - 1.2kg)", price: 150, img: "biscuits.jpg", note: "Subject to availability"},
+            {id: 11, name: "Assorted Biscuits (Tub 2 - 1.2kg)", price: 150, img: "biscuits.jpg", note: "Subject to availability"},
+            {id: 12, name: "Hake Crumbed Fingers (4kg Box)", price: 280, img: "🐟"},
+            {id: 13, name: "Hake Box (10kg Bulk)", price: 950, img: "📦"},
+            {id: 14, name: "Chicken Schnitzels (Large)", price: 265, img: "🍗"},
+            {id: 15, name: "Smoked Viennas (1kg)", price: 85, img: "🌭"},
+            {id: 16, name: "Beef Patties (Home Style)", price: 145, img: "🍔"},
+            {id: 17, name: "Lamb Chops (1kg)", price: 185, img: "🥩"}
         ];
         
         let cart = {}; let addrType = "Home"; let isAdmin = false;
@@ -160,6 +162,7 @@
                         <div class="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-3xl shadow-inner">${item.img}</div>
                         <div>
                             <p class="font-black text-slate-800 leading-tight">${item.name}</p>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase mt-0.5">${item.note || ""}</p>
                             <p class="text-xs font-black text-red-500 mt-1 uppercase tracking-widest">R ${item.price}</p>
                         </div>
                     </div>
