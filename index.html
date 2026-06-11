@@ -240,6 +240,12 @@
             updateTotal();
         }
 
+        function updateQty(id, delta) {
+            cart[id] = Math.max(0, (cart[id] || 0) + delta);
+            renderCustomerCatalog();
+            updateTotal();
+        }
+
         function updateTotal() {
             let total = 0;
             catalog.forEach(i => {
@@ -252,6 +258,27 @@
                 }
             });
             document.getElementById('total-val').innerText = "R " + total;
+        }
+
+        function toggleAdmin() {
+            if(prompt("Admin PIN:") === "1234") {
+                isAdmin = !isAdmin;
+                document.getElementById('app-body').classList.toggle('is-admin');
+                renderAdminCatalog();
+            }
+        }
+
+        function renderAdminCatalog() {
+            const container = document.getElementById('admin-catalog');
+            container.innerHTML = catalog.map(item => `
+                <div class="flex items-center justify-between p-4 bg-slate-50 rounded-3xl border border-slate-100 mb-2">
+                    <p class="font-black text-[10px] uppercase text-slate-500">${item.name}</p>
+                    <div class="flex items-center gap-2">
+                        <input type="number" value="${item.price}" class="w-16 p-2 rounded-xl border-none bg-white shadow-inner font-black text-center text-xs">
+                        <button class="bg-green-500 text-white w-8 h-8 rounded-lg text-[10px]"><i class="fa-solid fa-check"></i></button>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function sendOrder() {
