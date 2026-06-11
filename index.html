@@ -98,15 +98,8 @@
 
     <script>
         const catalog = [
-            {id: 1, name: "Italian Pasta Roll: Bolognese", price: 185, img: "pasta_rolls.jpg", note: "Subject to availability"},
-            {id: 2, name: "Italian Pasta Roll: Moroccan Chicken", price: 185, img: "pasta_rolls.jpg", note: "Subject to availability"},
-            {id: 3, name: "Italian Pasta Roll: Mexican Mince", price: 185, img: "pasta_rolls.jpg", note: "Subject to availability"},
-            {id: 4, name: "Italian Pasta Roll: Mince Stroganoff", price: 185, img: "pasta_rolls.jpg", note: "Subject to availability"},
-            {id: 5, name: "Italian Pasta Roll: Butter Chicken", price: 185, img: "pasta_rolls.jpg", note: "Subject to availability"},
-            {id: 6, name: "Italian Pasta Roll: Chicken Mushroom", price: 185, img: "pasta_rolls.jpg", note: "Subject to availability"},
-            {id: 7, name: "Italian Pasta Roll: Alfredo", price: 185, img: "pasta_rolls.jpg", note: "Subject to availability"},
-            {id: 8, name: "Italian Pasta Roll: Spinach Feta", price: 185, img: "pasta_rolls.jpg", note: "Subject to availability"},
-            {id: 9, name: "Italian Pasta Roll: Butternut Feta", price: 185, img: "pasta_rolls.jpg", note: "Subject to availability"},
+            {id: 1, name: "Italian Pasta Roll", price: 185, img: "pasta_rolls.jpg", note: "Handmade. Select flavors below.", isPasta: true, 
+             flavors: ["Bolognese", "Moroccan Chicken", "Mexican Mince", "Mince Stroganoff", "Butter Chicken", "Chicken Mushroom", "Alfredo", "Spinach Feta", "Butternut Feta"]},
             {id: 10, name: "Assorted Biscuits (Tub 1 - 1.2kg)", price: 150, img: "biscuits.jpg", note: "Subject to availability"},
             {id: 11, name: "Assorted Biscuits (Tub 2 - 1.2kg)", price: 150, img: "biscuits.jpg", note: "Subject to availability"},
             {id: 12, name: "Hake Crumbed Fingers (4kg Box)", price: 280, img: "hake_fingers.jpg", note: "Subject to availability"},
@@ -143,7 +136,36 @@
 
         function renderCustomerCatalog() {
             const container = document.getElementById('customer-catalog');
-            container.innerHTML = catalog.map(item => `
+            container.innerHTML = catalog.map(item => {
+                if (item.isPasta) {
+                    return `
+                        <div class="bg-white p-6 rounded-[2.5rem] shadow-sm border border-slate-100 space-y-4">
+                            <div class="flex items-center gap-5">
+                                <div class="w-24 h-24 bg-slate-50 rounded-3xl flex items-center justify-center text-4xl overflow-hidden border-2 border-white shadow-inner">
+                                    <img src="${item.img}" class="w-full h-full object-cover">
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-black text-slate-800 leading-tight text-lg">${item.name}</p>
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase mt-0.5">${item.note}</p>
+                                    <p class="text-sm font-black text-red-600 mt-1 uppercase tracking-widest">R ${item.price}</p>
+                                </div>
+                            </div>
+                            <div class="space-y-2 pt-2 border-t border-slate-50">
+                                ${item.flavors.map(flavor => `
+                                    <div class="flex items-center justify-between bg-slate-50 p-3 rounded-2xl">
+                                        <span class="font-bold text-xs text-slate-600">${flavor}</span>
+                                        <div class="flex items-center gap-3">
+                                            <button onclick="updateFlavorQty('${flavor}', -1)" class="bg-white w-8 h-8 rounded-lg shadow-sm font-black text-sm">-</button>
+                                            <span class="font-black text-sm w-4 text-center">${cart['pasta_' + flavor] || 0}</span>
+                                            <button onclick="updateFlavorQty('${flavor}', 1)" class="bg-white w-8 h-8 rounded-lg shadow-sm font-black text-sm">+</button>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+                return `
                 <div class="bg-white p-6 rounded-[2.5rem] shadow-sm border border-slate-100 flex items-center justify-between">
                     <div class="flex items-center gap-5">
                         <div class="w-24 h-24 bg-slate-50 rounded-3xl flex items-center justify-center text-4xl overflow-hidden border-2 border-white shadow-inner">
@@ -162,40 +184,28 @@
                         <button onclick="updateQty(${item.id}, 1)" class="bg-white w-10 h-10 rounded-xl shadow-md font-black text-lg">+</button>
                     </div>
                 </div>
-            `).join('');
+            `;}).join('');
         }
 
-        function updateQty(id, delta) {
-            cart[id] = Math.max(0, (cart[id] || 0) + delta);
+        function updateFlavorQty(flavor, delta) {
+            const key = 'pasta_' + flavor;
+            cart[key] = Math.max(0, (cart[key] || 0) + delta);
             renderCustomerCatalog();
             updateTotal();
         }
 
         function updateTotal() {
             let total = 0;
-            catalog.forEach(i => total += (i.price * (cart[i.id] || 0)));
+            catalog.forEach(i => {
+                if (i.isPasta) {
+                    i.flavors.forEach(f => {
+                        total += (i.price * (cart['pasta_' + f] || 0));
+                    });
+                } else {
+                    total += (i.price * (cart[i.id] || 0));
+                }
+            });
             document.getElementById('total-val').innerText = "R " + total;
-        }
-
-        function toggleAdmin() {
-            if(prompt("Admin PIN:") === "1234") {
-                isAdmin = !isAdmin;
-                document.getElementById('app-body').classList.toggle('is-admin');
-                renderAdminCatalog();
-            }
-        }
-
-        function renderAdminCatalog() {
-            const container = document.getElementById('admin-catalog');
-            container.innerHTML = catalog.map(item => `
-                <div class="flex items-center justify-between p-4 bg-slate-50 rounded-3xl border border-slate-100 mb-2">
-                    <p class="font-black text-[10px] uppercase text-slate-500">${item.name}</p>
-                    <div class="flex items-center gap-2">
-                        <input type="number" value="${item.price}" class="w-16 p-2 rounded-xl border-none bg-white shadow-inner font-black text-center text-xs">
-                        <button class="bg-green-500 text-white w-8 h-8 rounded-lg text-[10px]"><i class="fa-solid fa-check"></i></button>
-                    </div>
-                </div>
-            `).join('');
         }
 
         function sendOrder() {
@@ -203,7 +213,15 @@
             const addr = document.getElementById('cust-addr').value;
             const total = document.getElementById('total-val').innerText;
             let items = [];
-            catalog.forEach(i => { if(cart[i.id] > 0) items.push(`${cart[i.id]}x ${i.name}`); });
+            catalog.forEach(i => {
+                if (i.isPasta) {
+                    i.flavors.forEach(f => {
+                        if (cart['pasta_' + f] > 0) items.push(`${cart['pasta_' + f]}x Italian Pasta Roll (${f})`);
+                    });
+                } else {
+                    if (cart[i.id] > 0) items.push(`${cart[i.id]}x ${i.name}`);
+                }
+            });
             if(items.length === 0) return alert("Select some items first!");
             const message = `🍖 *NEW MEAT ORDER*\n\n*From:* ${name}\n*Delivery:* ${addr} (${addrType})\n\n*Items:*\n${items.join('\n')}\n\n*TOTAL: ${total}*`;
             window.location.href = `https://wa.me/27723714859?text=${encodeURIComponent(message)}`;
