@@ -72,11 +72,22 @@
                 <div class="space-y-3">
                     <input type="text" id="cust-name" placeholder="Full Name" class="w-full p-5 bg-slate-50 rounded-2xl border-2 border-transparent focus:border-red-500 focus:bg-white outline-none transition font-bold text-lg">
                     <input type="tel" id="cust-phone" placeholder="WhatsApp Number" class="w-full p-5 bg-slate-50 rounded-2xl border-2 border-transparent focus:border-red-500 focus:bg-white outline-none transition font-bold text-lg">
-                    <textarea id="cust-addr" placeholder="Delivery Address" class="w-full p-5 bg-slate-50 rounded-2xl border-2 border-transparent focus:border-red-500 focus:bg-white outline-none transition font-bold text-lg h-24 resize-none"></textarea>
+                    <textarea id="cust-addr" placeholder="Destination (Delivery Address)" class="w-full p-5 bg-slate-50 rounded-2xl border-2 border-transparent focus:border-red-500 focus:bg-white outline-none transition font-bold text-lg h-24 resize-none"></textarea>
                     
-                    <div class="flex gap-2">
-                        <button onclick="setAddressType('Home')" id="btn-home" class="flex-1 py-4 bg-red-50 border-2 border-red-200 rounded-2xl text-[10px] font-black transition tracking-widest text-red-600">🏠 HOME</button>
-                        <button onclick="setAddressType('Office')" id="btn-office" class="flex-1 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-[10px] font-black transition tracking-widest text-slate-400">🏢 OFFICE</button>
+                    <div class="space-y-2">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest text-left px-2">Order Type</p>
+                        <div class="flex gap-2">
+                            <button onclick="setOrderType('Delivery')" id="btn-delivery" class="flex-1 py-4 bg-red-50 border-2 border-red-200 rounded-2xl text-[10px] font-black transition tracking-widest text-red-600">🚚 DELIVERY</button>
+                            <button onclick="setOrderType('Pickup')" id="btn-pickup" class="flex-1 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-[10px] font-black transition tracking-widest text-slate-400">🛍️ PICKUP</button>
+                        </div>
+                    </div>
+
+                    <div id="addr-type-section" class="space-y-2">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest text-left px-2">Location Type</p>
+                        <div class="flex gap-2">
+                            <button onclick="setAddressType('Home')" id="btn-home" class="flex-1 py-4 bg-red-50 border-2 border-red-200 rounded-2xl text-[10px] font-black transition tracking-widest text-red-600">🏠 HOME</button>
+                            <button onclick="setAddressType('Office')" id="btn-office" class="flex-1 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-[10px] font-black transition tracking-widest text-slate-400">🏢 OFFICE</button>
+                        </div>
                     </div>
 
                     <button onclick="unlockCatalog()" class="w-full bg-red-600 text-white font-black py-5 rounded-2xl shadow-2xl shadow-red-200 uppercase tracking-[0.2em] text-sm hover:scale-[1.02] active:scale-95 transition mt-4">Browse Catalog</button>
@@ -128,8 +139,26 @@
         ];
 
         let cart = {};
+        let orderType = "Delivery";
         let addrType = "Home";
         let isAdmin = false;
+
+        function setOrderType(type) {
+            orderType = type;
+            document.getElementById('btn-delivery').className = type === 'Delivery' ? "flex-1 py-4 bg-red-50 border-2 border-red-200 rounded-2xl text-[10px] font-black tracking-widest text-red-600 transition" : "flex-1 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-[10px] font-black tracking-widest text-slate-400 transition";
+            document.getElementById('btn-pickup').className = type === 'Pickup' ? "flex-1 py-4 bg-red-50 border-2 border-red-200 rounded-2xl text-[10px] font-black tracking-widest text-red-600 transition" : "flex-1 py-4 bg-slate-50 border-2 border-transparent rounded-2xl text-[10px] font-black tracking-widest text-slate-400 transition";
+            
+            const addrInput = document.getElementById('cust-addr');
+            const addrSection = document.getElementById('addr-type-section');
+            
+            if(type === 'Pickup') {
+                addrInput.placeholder = "Notes for Collection (Optional)";
+                addrSection.classList.add('hidden');
+            } else {
+                addrInput.placeholder = "Destination (Delivery Address)";
+                addrSection.classList.remove('hidden');
+            }
+        }
 
         function setAddressType(type) {
             addrType = type;
@@ -141,7 +170,10 @@
             const name = document.getElementById('cust-name').value;
             const phone = document.getElementById('cust-phone').value;
             const addr = document.getElementById('cust-addr').value;
-            if(!name || !phone || !addr) return alert("Please complete your details!");
+            
+            if(!name || !phone) return alert("Please enter your name and WhatsApp number!");
+            if(orderType === 'Delivery' && !addr) return alert("Please enter a Destination for delivery!");
+            
             document.getElementById('welcome-step').classList.add('step-inactive');
             document.getElementById('catalog-step').classList.remove('step-inactive');
             document.getElementById('checkout-bar').classList.remove('step-inactive');
@@ -237,7 +269,7 @@
                 }
             });
             if(items.length === 0) return alert("Select some items first!");
-            const message = `🍖 *NEW MEAT ORDER*\n\n*From:* ${name}\n*Delivery:* ${addr} (${addrType})\n\n*Items:*\n${items.join('\n')}\n\n*TOTAL: ${total}*`;
+            const message = `🍖 *NEW MEAT ORDER*\n\n*From:* ${name}\n*Type:* ${orderType}${orderType === 'Delivery' ? `\n*Destination:* ${addr} (${addrType})` : `\n*Pickup Notes:* ${addr || 'None'}`}\n\n*Items:*\n${items.join('\n')}\n\n*TOTAL: ${total}*`;
             window.location.href = `https://wa.me/27723714859?text=${encodeURIComponent(message)}`;
         }
     </script>
